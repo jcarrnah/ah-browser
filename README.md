@@ -12,7 +12,7 @@ Browse the WoW Forever auction house from anywhere, as of your last scan, with p
    It takes about a minute. The server allows one full scan per account every 15 minutes, and the button shows
    the countdown. If Auctionator or Crafter's Journal does a full scan, AHSnap reads along and saves it too.
 2. `/reload` or log out. WoW only writes addon data to disk then.
-3. Double-click `publish.cmd`. It adds the new scan(s) to `site/data` and pushes them, and the site updates.
+3. Double-click `publish.cmd`. It adds the new scan(s) to `site/data` and puts them online.
    `preview.cmd` shows the site locally at http://localhost:8788 instead.
 
 The addon keeps the last 5 scans per realm, so you can scan several times before publishing.
@@ -33,12 +33,13 @@ The addon keeps the last 5 scans per realm, so you can scan several times before
 The site is static files. The published `site/data` files are the price history too: each scan is appended to them,
 so the git repo is the archive.
 
-**Cloudflare Pages** (like 77th-calendar): push this repo to GitHub, then in Cloudflare create a Pages project from it
-with no build command and output directory `site`. Every `publish.cmd` push deploys. Pages sites are public; put
-Cloudflare Access in front if you'd rather they weren't.
+**Live at https://ah.clipp-y.com**: a Cloudflare Worker serving `site/` (`wrangler.jsonc`, like clipstream-web).
+`publish.cmd` commits the new data, pushes it to GitHub (https://github.com/jcarrnah/ah-browser) and runs
+`wrangler deploy`. After changing the site itself, `python tools\ahsnap.py deploy`. Wrangler must be logged in
+(`npx wrangler login`) on the PC that publishes.
 
-**Unraid**: serve `site/` with any web server container (nginx, Caddy), from a clone of the repo that a User
-Scripts job keeps current with `git pull` (e.g. hourly), and expose it through the Cloudflare tunnel.
+**Unraid** instead or as well: serve `site/` with any web server container (nginx, Caddy), from a clone of the repo
+that a User Scripts job keeps current with `git pull` (e.g. hourly), and expose it through the Cloudflare tunnel.
 
 ## Setup on a PC
 

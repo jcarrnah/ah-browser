@@ -1,0 +1,10 @@
+{
+  // Serves site/ as the "ah-browser" Worker (static files only) at ah.clipp-y.com.
+  // publish.cmd deploys it after each new scan; by hand: npx wrangler deploy
+  "name": "ah-browser",
+  "compatibility_date": "2026-09-27",
+  "assets": { "directory": "./site" },
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "ah.clipp-y.com", "custom_domain": true }]
+}

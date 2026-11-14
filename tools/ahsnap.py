@@ -3,7 +3,8 @@
 
     python tools/ahsnap.py              read new scans into site/data (same as "ingest")
     python tools/ahsnap.py serve        ingest, then preview the site at http://localhost:8788
-    python tools/ahsnap.py publish      ingest, then commit site/data and git push (Pages deploys it)
+    python tools/ahsnap.py publish      ingest, commit site/data, push it to GitHub and deploy to ah.clipp-y.com
+    python tools/ahsnap.py deploy       deploy site/ as it is (after changing the site itself)
     python tools/ahsnap.py --wow "D:\\Games\\World of Warcraft\\_forever_" ...   another install
 
 WoW writes addon data to disk only on /reload, logout or exit, so a scan shows up here after one
@@ -360,6 +361,14 @@ def git(*args, check=True):
     return subprocess.run(["git", *args], cwd=ROOT, check=check, capture_output=True, text=True)
 
 
+def deploy():
+    print("Deploying to Cloudflare...")
+    r = subprocess.run("npx --yes wrangler@4.81.0 deploy", cwd=ROOT, shell=True, capture_output=True, text=True)
+    if r.returncode:
+        sys.exit("wrangler deploy failed:\n" + r.stdout[-2000:] + r.stderr[-2000:])
+    print("Live at https://ah.clipp-y.com")
+
+
 def publish():
     if not os.path.isdir(os.path.join(ROOT, ".git")):
         sys.exit("Not a git repo yet: see README, Hosting.")
@@ -368,18 +377,15 @@ def publish():
         print("Nothing new to publish.")
         return
     git("commit", "-m", "Scan " + time.strftime("%Y-%m-%d %H:%M"))
-    if not git("remote", check=False).stdout.strip():
-        print("Committed. No git remote yet, so nothing was pushed.")
-        return
-    r = git("push", check=False)
-    if r.returncode:
-        sys.exit("git push failed:\n" + r.stderr)
-    print("Pushed. Cloudflare Pages deploys it in a minute or two.")
+    if git("remote", check=False).stdout.strip():
+        r = git("push", check=False)
+        print("git push failed (the site still deploys):\n" + r.stderr if r.returncode else "Pushed to GitHub.")
+    deploy()
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", nargs="?", default="ingest", choices=["ingest", "serve", "publish"])
+    ap.add_argument("command", nargs="?", default="ingest", choices=["ingest", "serve", "publish", "deploy"])
     ap.add_argument("--wow", default=os.environ.get("AHSNAP_WOW", DEFAULT_WOW), help="the _forever_ folder")
     ap.add_argument("--port", type=int, default=8788)
     a = ap.parse_args()
@@ -388,6 +394,8 @@ def main():
         serve(a.port)
     elif a.command == "publish":
         publish()
+    elif a.command == "deploy":
+        deploy()
 
 
 if __name__ == "__main__":
