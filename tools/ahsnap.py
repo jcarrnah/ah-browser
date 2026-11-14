@@ -358,12 +358,12 @@ def serve(port):
 
 
 def git(*args, check=True):
-    return subprocess.run(["git", *args], cwd=ROOT, check=check, capture_output=True, text=True)
+    return subprocess.run(["git", *args], cwd=ROOT, check=check, capture_output=True, text=True, encoding="utf-8", errors="replace")
 
 
 def deploy():
     print("Deploying to Cloudflare...")
-    r = subprocess.run("npx --yes wrangler@4.81.0 deploy", cwd=ROOT, shell=True, capture_output=True, text=True)
+    r = subprocess.run("npx --yes wrangler@4.81.0 deploy", cwd=ROOT, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if r.returncode:
         sys.exit("wrangler deploy failed:\n" + r.stdout[-2000:] + r.stderr[-2000:])
     print("Live at https://ah.clipp-y.com")
