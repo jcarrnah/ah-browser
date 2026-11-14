@@ -98,10 +98,10 @@ local function Refresh()
     button:SetText(statusText)
     button:Disable()
   elseif wait > 0 then
-    button:SetText("Next snapshot in " .. Countdown(wait))
+    button:SetText("Next snapshot " .. Countdown(wait))
     button:Disable()
   else
-    button:SetText("Snapshot auction house")
+    button:SetText("Snapshot AH")
     button:Enable()
   end
 end
@@ -119,7 +119,7 @@ local function ShowButton(show)
     if not button then
       -- parented to UIParent and only anchored to the auction window, so nothing of Blizzard's is touched
       button = CreateFrame("Button", "AHSnapButton", UIParent, "UIPanelButtonTemplate")
-      button:SetSize(220, 24)
+      button:SetSize(170, 24)
       button:SetScript("OnClick", function() Start() end)
       button:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_TOP")
@@ -131,8 +131,11 @@ local function ShowButton(show)
       end)
       button:SetScript("OnLeave", GameTooltip_Hide)
     end
+    -- along the window's top edge, left of Crafter's Journal's two buttons (180 + 4 + 150 wide, from the right)
+    local IsLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+    local taken = (IsLoaded and IsLoaded("CraftersJournal")) and 338 or 0
     button:ClearAllPoints()
-    button:SetPoint("BOTTOMRIGHT", host, "TOPRIGHT", -30, 2)
+    button:SetPoint("BOTTOMRIGHT", host, "TOPRIGHT", -taken, 2)
     button:SetFrameStrata("HIGH")
     button:Show()
     if not ticker then ticker = C_Timer.NewTicker(1, Refresh) end

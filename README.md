@@ -8,7 +8,7 @@ Browse the WoW Forever auction house from anywhere, as of your last scan, with p
 
 ## Taking a snapshot
 
-1. In game, open the auction house and click **Snapshot auction house** (above the auction window), or type `/ahsnap`.
+1. In game, open the auction house and click **Snapshot AH** (above the auction window, left of Crafter's Journal's buttons), or type `/ahsnap`.
    It takes about a minute. The server allows one full scan per account every 15 minutes, and the button shows
    the countdown. If Auctionator or Crafter's Journal does a full scan, AHSnap reads along and saves it too.
 2. `/reload` or log out. WoW only writes addon data to disk then.
