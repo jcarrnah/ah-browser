@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AH Browser</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23e8b830'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23946f0c' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script>const whTooltips = { colorLinks: false, iconizeLinks: true, renameLinks: false, iconSize: "small" };</script>
+<script src="https://wow.zamimg.com/js/tooltips.js" async></script>
+</head>
+<body>
+<header class="top">
+  <h1>AH Browser</h1>
+  <select id="realm" aria-label="Realm"></select>
+  <span id="fresh" class="muted"></span>
+</header>
+
+<main>
+  <section id="browse">
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search items" aria-label="Search items" autocomplete="off">
+      <select id="type" aria-label="Category"><option value="">All categories</option></select>
+      <select id="subtype" aria-label="Subcategory"><option value="">All</option></select>
+      <select id="slot" aria-label="Slot"><option value="">Any slot</option></select>
+      <select id="quality" aria-label="Rarity">
+        <option value="">Any rarity</option>
+        <option value="0">Poor+</option><option value="1">Common+</option><option value="2">Uncommon+</option>
+        <option value="3">Rare+</option><option value="4">Epic+</option>
+      </select>
+      <span class="lvl">Level <input id="lmin" type="number" min="0" max="100" aria-label="Minimum level"> –
+        <input id="lmax" type="number" min="0" max="100" aria-label="Maximum level"></span>
+      <label class="check"><input id="deals" type="checkbox"> Below usual</label>
+    </div>
+    <p id="count" class="muted"></p>
+    <div class="table-wrap">
+      <table id="list">
+        <thead><tr>
+          <th data-sort="name">Item</th>
+          <th data-sort="req" class="num hide-s">Lvl</th>
+          <th data-sort="ilvl" class="num hide-s">iLvl</th>
+          <th data-sort="qty" class="num">Available</th>
+          <th data-sort="min" class="num">Lowest</th>
+          <th data-sort="market" class="num hide-s">Market</th>
+          <th data-sort="vs" class="num hide-s">vs usual</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <nav class="pager">
+      <button id="prev" type="button">‹ Prev</button>
+      <span id="page" class="muted"></span>
+      <button id="next" type="button">Next ›</button>
+    </nav>
+  </section>
+
+  <section id="item" hidden>
+    <button id="back" type="button" class="link">‹ Back to results</button>
+    <h2 id="i-name"></h2>
+    <p id="i-meta" class="muted"></p>
+    <div class="stats" id="i-stats"></div>
+    <h3>Price history</h3>
+    <div id="i-chart" class="chart"></div>
+    <details id="i-hist-table"><summary>Show history as a table</summary><div class="table-wrap"><table></table></div></details>
+    <h3>Listings</h3>
+    <div class="table-wrap"><table id="i-listings"></table></div>
+  </section>
+
+  <p id="empty" class="muted" hidden></p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

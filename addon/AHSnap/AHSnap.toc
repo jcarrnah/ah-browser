@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: AHSnap
+## Notes: Saves a full auction house scan for the AH Browser site. /ahsnap
+## Author: jcarr
+## Version: 1.0.0
+## Category: Auctions
+## SavedVariables: AHSnapDB
+
+AHSnap.lua
